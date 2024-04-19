@@ -1,3 +1,7 @@
 node_modules/
 yarn.lock
+<<<<<<< HEAD
 NodeProject/package-lock.json
+=======
+data/
+>>>>>>> 90d067d8db817a52c9abe84802cd24d906d2c4c8

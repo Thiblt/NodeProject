@@ -1,15 +1,12 @@
 // ------ Dependences ------
-
-require("dotenv").config();
-
-const cors = require("cors");
 const express = require("express");
+const sequelize = require("./config/sequelize.config");
+
 const app = express();
-const port = process.env.PORT || 3001;
+const port = 3001;
 
 // ------ Middlewares ------
 
-app.use(cors());
 app.use(express.json());
 
 // ------ Routes ------
@@ -20,6 +17,15 @@ app.get("/", (req, res) => {
 
 // ------ Listen ------
 
-app.listen(port, () => {
-  console.log(`Server listening on: http://localhost:${port}`);
+app.listen(port, async () => {
+  try {
+    await sequelize.authenticate();
+    if (process.env.NODE_ENV !== "developpement") {
+      await sequelize.sync({ force: true });
+    }
+    console.log(process.env.NODE_ENV);
+    console.log("Connection has been established successfully.");
+  } catch (error) {
+    throw error;
+  }
 });

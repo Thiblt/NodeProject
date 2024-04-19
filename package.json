@@ -2,6 +2,9 @@
   "name": "NodeProject",
   "version": "1.0.0",
   "main": "index.js",
+  "scripts": {
+    "dev": "nodemon index.js"
+  },
   "repository": "https://github.com/Thiblt/NodeProject",
   "author": "Iam4ealDamba <prayforsouls720@gmail.com>",
   "license": "MIT",
