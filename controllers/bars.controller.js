@@ -1,5 +1,18 @@
 const { validationResult } = require("express-validator");
+const { Op } = require("sequelize");
+
 const Bars = require("../models/bars.model");
+
+const Commands = [
+  {
+    id: 1,
+    date: "2021-01-01",
+    price: 10,
+    quantity: 1,
+    status: "en cours",
+    id_bar: 1,
+  },
+];
 
 const BarsController = {
   /**
@@ -10,8 +23,23 @@ const BarsController = {
    */
   all: async (req, res) => {
     try {
+      const { city, name } = req.query;
+
+      const bar_list_where = () => {
+        let where = {};
+        if (city) {
+          where.adresse = { [Op.like]: `%${city.toLowerCase()}%` };
+        }
+        if (name) {
+          where.name = { [Op.like]: `%${name.toLowerCase()}%` };
+        }
+        return where;
+      };
+
       // fetch all bars
-      const bar_list = await Bars.findAll({});
+      const bar_list = await Bars.findAll({
+        where: bar_list_where(),
+      });
       if (!bar_list) {
         return res.status(404).json({
           message: "Error: Bars not found",
@@ -35,12 +63,6 @@ const BarsController = {
    * - data?: array | object
    */
   one: async (req, res) => {
-    // Verify if middleware catch some errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     try {
       const { id_bar } = req.params;
       const bar = await Bars.findByPk(id_bar);
@@ -67,12 +89,6 @@ const BarsController = {
    * - data?: array | object
    */
   create: async (req, res) => {
-    // Verify if middleware catch some errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     try {
       const { name, adresse, tel, email, description } = req.body;
       // Verify the existence of the bar
@@ -123,12 +139,6 @@ const BarsController = {
    * - data?: array | object
    */
   update: async (req, res) => {
-    // Verify if middleware catch some errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     try {
       const { id_bar } = req.params;
       const { name, adresse, tel, email, description } = req.body;
@@ -175,12 +185,6 @@ const BarsController = {
    * - data?: array | object
    */
   delete: async (req, res) => {
-    // Verify if middleware catch some errors
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     try {
       const { id_bar } = req.params;
 

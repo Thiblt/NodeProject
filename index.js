@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 
 // ------ Routes ------
 
-app.use("/api/bars", BarsRouter);
+app.use("/bars", BarsRouter);
 
 // ------ Listen ------
 
