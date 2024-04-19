@@ -1,0 +1,13 @@
+{
+  "name": "NodeProject",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "https://github.com/Thiblt/NodeProject",
+  "author": "Iam4ealDamba <prayforsouls720@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
+  }
+}
