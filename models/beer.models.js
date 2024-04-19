@@ -7,7 +7,7 @@ const Biere = db.define("biere", {
   description: { type: sequelize.STRING, allowNull: true },
   degree: { type: sequelize.FLOAT },
   price: { type: sequelize.FLOAT },
-  bars_id: { type: sequelize.NUMBER },
+  id_bar: { type: sequelize.NUMBER },
 });
 
 module.exports = Biere;

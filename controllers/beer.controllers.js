@@ -1,14 +1,22 @@
 const Beer = require("../models/beer.models");
-const bar = 1;
+const bars = [
+  {
+    id: 1,
+    name: "test",
+  },
+];
 //List of all beers from a bar
 const getAll = (req, res) => {
-  Beer.findAll().then((beer) => res.json(beer));
+  console.log(req.params.id_bar);
+  Beer.findAll({ where: { id_bar: req.params.id_bar } }).then((beer) =>
+    res.json(beer)
+  );
 };
 // Create a beer
 const beer_new = (req, res) => {
-  const bar = {
-    id: req.params.id,
-  };
+  const testBar = bars.filter((bar) => bar.id == req.params.id_bar && bar)[0];
+
+  if (testBar == undefined) return res.send("Le bar n'existe pas");
 
   const beer = {};
   if (req.body.name !== undefined) beer.name = req.body.name;
@@ -16,7 +24,7 @@ const beer_new = (req, res) => {
     beer.description = req.body.description;
   if (req.body.degree !== undefined) beer.degree = req.body.degree;
   if (req.body.price !== undefined) beer.price = req.body.price;
-  //if (req.body.bars_id !== undefined) beer.bars_id = req.body.beers_id;
+  beer.id_bar = testBar.id;
 
   Beer.create(beer)
     .then((queryResult) => {
@@ -28,16 +36,15 @@ const beer_new = (req, res) => {
 };
 
 //modify a beer
-const update = (req, res) => {
+const update = async (req, res) => {
   const beer = {};
   if (req.body.name !== undefined) beer.name = req.body.name;
   if (req.body.description !== undefined)
     beer.description = req.body.description;
   if (req.body.degree !== undefined) beer.degree = req.body.degree;
   if (req.body.price !== undefined) beer.price = req.body.price;
-  if (req.body.bars_id !== undefined) beer.bars_id = req.body.beers_id;
 
-  Beer.update(beer, { where: { id: req.params.id } })
+  await Beer.update(beer, { where: { id: req.params.id } })
     .then((queryResult) => res.send(queryResult))
     .catch((err) => {
       res.send(err);
@@ -52,8 +59,8 @@ const destroy = (req, res) => {
 };
 
 // Watch beer info
-const getById = (req, res) => {
-  Beer.findByPk(req.params.id).then((queryResult) => {
+const getById = async (req, res) => {
+  await Beer.findByPk(req.params.id).then((queryResult) => {
     res.json(queryResult);
   });
 };
