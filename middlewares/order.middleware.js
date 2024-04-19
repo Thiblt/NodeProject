@@ -8,6 +8,15 @@ const ValidateCustomString = (value) => {
     return false;
   };
 
+  const ValidateCustomDate = (value) => {
+    const formattedDateString = value.replace(/\//g, "-")
+    const date = new Date(formattedDateString);
+    if ( date > Date.now()) {
+      return false;
+    }
+    return true;
+  };
+
 const validateIdParamOrder = [
   param('id_commande')
     .notEmpty()
@@ -30,7 +39,7 @@ const validateBodyOrder = [
 const validateBodyPutOrder = [ 
     body('price').optional().not().isString().notEmpty().isFloat({min:0}), 
     body('name').optional().notEmpty().isString(),
-    body('date').optional().isDate(),
+    body('date').optional().isDate().custom(ValidateCustomDate).withMessage('Invalid date value'),
     body('status').optional().custom(ValidateCustomString).withMessage('Invalid string value'),
   ];
 
