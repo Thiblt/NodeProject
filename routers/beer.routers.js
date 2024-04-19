@@ -5,24 +5,24 @@ const {
   beer_new,
   getById,
 } = require("../controllers/beer.controllers.js");
-/* const {
-  validateIdParam,
-  validateBodyParam,
-} = require("../validator/taskValidator.js");
-const validate = require("../validator/validate.js"); */
 
+const {
+  validateBeerIdParam,
+  validateBeerBodyParam,
+} = require("../middlewares/beer.middleware.js");
+const validate = require("../middlewares/validate.middlewares.js");
 const express = require("express");
 const router = express.Router();
 
 //add a beer in a bar
-router.post("/bars/:id_bar/biere", beer_new);
+router.post("/bars/:id_bar", validateBeerBodyParam, validate, beer_new);
 //Edit a beer
-router.put("/beer/:id", update);
+router.put("/:id", validateBeerBodyParam, validate, update);
 //delete a beer
-router.delete("/beer/:id", destroy);
+router.delete("/:id", destroy);
 //list of all beers of a bar
-router.get("bars/:id_bar/beer", getAll);
+router.get("/bars/:id_bar", getAll);
 //details of a beer
-router.get("beer/:id", getById);
+router.get("/:id", getById);
 
 module.exports = router;

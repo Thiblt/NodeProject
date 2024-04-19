@@ -1,7 +1,7 @@
 // ------ Dependences ------
 const express = require("express");
 const sequelize = require("./config/sequelize.config");
-
+const beerRouter = require("./routers/beer.routers");
 const app = express();
 const port = 3001;
 
@@ -11,16 +11,14 @@ app.use(express.json());
 
 // ------ Routes ------
 
-app.get("/", (req, res) => {
-  res.send("Hello from server !");
-});
+app.use("/beers", beerRouter);
 
 // ------ Listen ------
 
 app.listen(port, async () => {
   try {
     await sequelize.authenticate();
-    if (process.env.NODE_ENV !== "developpement") {
+    if (process.env.NODE_ENV !== "production") {
       await sequelize.sync({ force: true });
     }
     console.log(process.env.NODE_ENV);
