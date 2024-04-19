@@ -3,13 +3,13 @@ require("dotenv").config();
 const express = require("express");
 const sequelize = require("./config/sequelize.config");
 const orderRouter = require("./routers/order.router.js");
+const BarsRouter = require("./routers/bars.router");
+const beerRouter = require("./routers/beer.router");
 
-const beerRouter = require("./routers/beer.routers");
 const app = express();
 const port = 3001;
 
-const sequelize = require("./config/sequelize.config");
-const BarsRouter = require("./routers/bars.router");
+
 
 // ------ Middlewares ------
 
