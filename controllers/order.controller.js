@@ -1,4 +1,4 @@
-const Order = require("../models/order.js");
+const Order = require("../models/order.model.js");
 
 const getOrderById = (req, res) => {
   Order.findByPk(req.params.id).then((order) => res.json(order));
