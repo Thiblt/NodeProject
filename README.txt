@@ -98,7 +98,7 @@ package.json
 - express
 - body-parser
 - sequelize
-- sqlite3
+- sqlite3 
 - nodemon
 - express-validator
 - dotenv
