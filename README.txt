@@ -40,7 +40,7 @@ BARS :
   DELETE /bars/:id_bar => Supprimer un bars
   GET /bars => Liste des bars
   GET /bars/:id_bar => Détail d'un bars
-
+//TTEEEST
 BIERE : 
   POST /bars/:id_bar/biere => Ajouter un plat à un bars
   PUT /biere/:id_biere => Modifier un plat
