@@ -1,6 +1,8 @@
 // ------ Dependences ------
 require("dotenv").config();
 const express = require("express");
+const sequelize = require("./config/sequelize.config");
+const orderRouter = require("./routers/order.router.js")
 
 const app = express();
 const port = 3001;
@@ -16,6 +18,7 @@ app.use(express.urlencoded({ extended: true }));
 // ------ Routes ------
 
 app.use("/bars", BarsRouter);
+app.use("/orders",orderRouter)
 
 // ------ Listen ------
 
