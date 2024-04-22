@@ -5,6 +5,8 @@ const sequelize = require("./config/sequelize.config");
 const orderRouter = require("./routers/order.router.js");
 const BarsRouter = require("./routers/bars.router");
 const beerRouter = require("./routers/beer.router");
+const beer_orderRouter = require("./routers/beer_order.router");
+
 
 const app = express();
 const port = 3001;
@@ -21,6 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use("/bars", BarsRouter);
 app.use("/orders", orderRouter);
 app.use("/beers", beerRouter);
+app.use("/beer_order", beer_orderRouter);
 
 // ------ Listen ------
 

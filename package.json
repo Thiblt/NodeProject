@@ -8,12 +8,10 @@
   "repository": "https://github.com/Thiblt/NodeProject",
   "author": "Iam4ealDamba <prayforsouls720@gmail.com>",
   "license": "MIT",
-  "scripts": {
-    "dev": "nodemon index.js"
-  },
   "dependencies": {
     "dotenv": "^16.4.5",
     "express": "^4.19.2",
+    "express-pdf": "^1.2.2",
     "express-validator": "^7.0.1",
     "nodemon": "^3.1.0",
     "sequelize": "^6.37.3",

@@ -9,7 +9,7 @@ const Order = db.define("order", {
     type: sequelize.INTEGER,
     allowNull: false,
   },
-  date: { type: sequelize.DATE, defaultValue: sequelize.NOW },
+  date: { type: sequelize.STRING},
   status: { type: sequelize.STRING, allowNull: false },
 });
 

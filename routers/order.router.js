@@ -8,19 +8,19 @@ const  validate =require ("../middlewares/validate.middleware")
 const express = require("express")
 const router = express.Router()
 
-// POST /bars/:id_bar/commandes => Ajouter une commande à un bars
+// POST /orders/bars/:id_bar => Ajouter une commande à un bars
 router.post("/bars/:id_bar",validateId_barParam, validateBodyOrder,validate,  addOrder)
 
-//   GET /bars/:id_bar/commandes => Liste des commandes d'un bars
+//   GET /orders/bars/:id_bar => Liste des commandes d'un bars
 router.get("/bars/:id_bar",validateId_barParam, validate, getAllOrderByBar)
 
-//   GET /commandes/:id => Détail d'une commande d'un bars
+//   GET //orders/:id_commande => Détail d'une commande d'un bars
 router.get("/:id_commande",validateIdParamOrder, validate, getOrderById)
 
-//   PUT /commandes/:id_commande => Modifier une commande d'un bars
+//   PUT //orders/:id_commande => Modifier une commande d'un bars
 router.put("/:id_commande", validateIdParamOrder,validateBodyPutOrder, validate, putOrder )
 
-// DELETE /commandes/:id_commande => Supprimer une commande d'un bars
+// DELETE /orders/:id_commande => Supprimer une commande d'un bars
 router.delete("/:id_commande",validateIdParamOrder, validate, deleteOrderById)
 
 
