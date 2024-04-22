@@ -25,6 +25,16 @@ const BarsMiddleware = {
       .isString(),
   ],
   delete: param("id_bar", "id_bars must be added to URL").notEmpty().isInt(),
+  degree: [
+    query("price_min", "price_min must be added to URL")
+      .optional()
+      .isFloat()
+      .withMessage("Price_min must be a number"),
+    query("price_max", "price_max must be added to URL")
+      .optional()
+      .isFloat()
+      .withMessage("Price_max must be a number"),
+  ],
 };
 
 module.exports = BarsMiddleware;

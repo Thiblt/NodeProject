@@ -24,4 +24,11 @@ router
 //   BarsController.command_by_date
 // );
 
+router.get(
+  "/:id_bar/degree",
+  BarsMiddleware.degree,
+  validate,
+  BarsController.getDegree
+);
+
 module.exports = router;

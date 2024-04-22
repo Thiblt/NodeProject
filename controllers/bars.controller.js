@@ -2,7 +2,9 @@ const { validationResult } = require("express-validator");
 const { Op } = require("sequelize");
 
 const Bars = require("../models/bars.model");
-
+const Beer = require("../models/beer.model");
+const OrderBeer = require("../models/beer_order.model");
+const Order = require("../models/order.model");
 const Commands = [
   {
     id: 1,
@@ -210,6 +212,91 @@ const BarsController = {
       return res.status(500).json({
         message: `Error: ${error}}`,
       });
+    }
+  },
+
+  getDegree: async (req, res) => {
+    const { id_bar } = req.params;
+    const { price_min, price_max, date } = req.query;
+    const beerList = [];
+
+    const bar = await Bars.findByPk(id_bar).then((data) => {
+      return data;
+    });
+
+    if (!bar) {
+      return res.status(400).json({
+        message: "Error: bar not found",
+      });
+    }
+    //récupère une liste des commandes
+    const orders = await Order.findAll({
+      where: {
+        id_bar: id_bar,
+        date: {
+          [Op.like]: `%${date.split("-")[2]}/${date.split("-")[1]}/${
+            date.split("-")[0]
+          }%`,
+        },
+      },
+    });
+
+    //console.log(orders);
+    if (orders.length) {
+      orders.forEach(async (order) => {
+        const ordersBeers = await OrderBeer.findAll({
+          where: { id_order: order.id },
+        });
+        if (ordersBeers.length) {
+          //on se trouve dans la table de jointure et on a plusieurs éléments de cette table
+          //ordersBeers.forEach(async (orderBeer) => {
+          for (let orderBeer of ordersBeers) {
+            const beer = await Beer.findByPk(orderBeer.id_beer);
+            if (!beerList.filter((_beer) => _beer.id == beer.id).length) {
+              beerList.push(beer);
+            }
+          }
+          console.log("beerlist", beerList);
+          let totDegree = 0;
+          // boucle et incrémente toutes les bières filtrées
+          beerList.forEach((beer) => {
+            totDegree += beer.degree;
+          });
+          // On récupérè le total de dégré et on le divise par le nombre de bière trouvé
+          const averageDegree = Math.round(totDegree / beerList.length);
+          return res.json({ averageDegree });
+        }
+      });
+    } else {
+      const beer_where = () => {
+        let result = { id_bar: bar.id };
+        if (price_min) {
+          result.price = { ...result.price, [Op.gte]: price_min };
+        }
+        if (price_max) {
+          result.price = { ...result.price, [Op.lte]: price_max };
+        }
+        return result;
+      };
+
+      const beers = await Beer.findAll({ where: beer_where() }).then((data) => {
+        return data;
+      });
+
+      if (!beers.length) {
+        return res.status(400).json({
+          message: "Error: beer not found",
+        });
+      }
+
+      let totDegree = 0;
+      // boucle et incrémente toutes les bières filtrées
+      beers.forEach((beer) => {
+        totDegree += beer.degree;
+      });
+      // On récupérè le total de dégré et on le divise par le nombre de bière trouvé
+      const averageDegree = Math.round(totDegree / beers.length);
+      return res.json({ averageDegree });
     }
   },
 };
