@@ -1,7 +1,8 @@
-const { validationResult } = require("express-validator");
 const { Op } = require("sequelize");
 
 const Bars = require("../models/bars.model");
+const Orders = require("../models/order.model");
+const Beers = require("../models/beer.model");
 
 const Commands = [
   {
@@ -11,6 +12,7 @@ const Commands = [
     quantity: 1,
     status: "en cours",
     id_bar: 1,
+    name: "biere",
   },
 ];
 
@@ -40,9 +42,9 @@ const BarsController = {
       const bar_list = await Bars.findAll({
         where: bar_list_where(),
       });
-      if (!bar_list) {
+      if (!bar_list.length) {
         return res.status(404).json({
-          message: "Error: Bars not found",
+          message: "Error: Bars was not found",
         });
       }
 
@@ -75,6 +77,81 @@ const BarsController = {
       return res.status(200).json({
         message: "Request successfully completed",
         data: bar,
+      });
+    } catch (error) {
+      return res.status(500).json({
+        message: `Error: ${error}}`,
+      });
+    }
+  },
+  /**
+   * Recupère la liste des commandes d'un bar, à une date donnée
+   */
+  orders_by_date: async (req, res) => {
+    try {
+      const { id_bar } = req.params;
+      const { date, price_min, price_max, status, name } = req.query;
+      if (!date && !price_min && !price_max && !status && !name) {
+        return res.status(404).json({
+          message: "Error: Date / Price not found",
+        });
+      }
+
+      const bar = await Bars.findByPk(id_bar);
+      if (!bar) {
+        return res.status(404).json({
+          message: "Error: Bar not found",
+        });
+      }
+
+      const orders_where = () => {
+        let where = {
+          id_bar: id_bar,
+        };
+        if (date) {
+          const new_date = new Date(date).toLocaleString().split(" ")[0];
+          const day = new_date.split("/")[0];
+          const month = new_date.split("/")[1];
+          const year = new_date.split("/")[2];
+          const formatted_date = `${day}/${month}/${year}`;
+
+          where.date = {
+            [Op.like]: `%${formatted_date}%`,
+          };
+        }
+        if (price_min) {
+          where.price = {
+            ...where.price,
+            [Op.gte]: price_min,
+          };
+        }
+        if (price_max) {
+          where.price = {
+            ...where.price,
+            [Op.lte]: price_max,
+          };
+        }
+        if (status) {
+          where.status = { [Op.like]: `%${status}%` };
+        }
+        if (name) {
+          where.name = { [Op.like]: `%${name}%` };
+        }
+        return where;
+      };
+
+      const orders = await Orders.findAll({
+        where: orders_where(),
+      });
+      if (!orders.length) {
+        return res.status(404).json({
+          message: "Error: Orders not found",
+        });
+      }
+
+      return res.status(200).json({
+        message: "Request successfully completed",
+        data: orders,
       });
     } catch (error) {
       return res.status(500).json({

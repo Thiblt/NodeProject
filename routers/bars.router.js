@@ -18,10 +18,11 @@ router
   .delete(BarsMiddleware.delete, validate, BarsController.delete);
 
 // Specific Routes
-// router.get(
-//   "/:id_bar/commandes",
-//   BarsMiddleware.command_by_date,
-//   BarsController.command_by_date
-// );
+router.get(
+  "/:id_bar/orders",
+  BarsMiddleware.command_by_date,
+  validate,
+  BarsController.orders_by_date
+);
 
 module.exports = router;

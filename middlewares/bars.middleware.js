@@ -14,6 +14,13 @@ const BarsMiddleware = {
     .notEmpty()
     .isInt()
     .withMessage("id_bars must be an integer"),
+  command_by_date: [
+    query("date", "date must be added to query").optional().isString(),
+    query("price_min", "price_min must be added to query").optional().isFloat(),
+    query("price_max", "price_max must be added to query").optional().isFloat(),
+    query("status", "status must be added to query").optional().isString(),
+    query("name", "name must be added to query").optional().isString(),
+  ],
   update: [
     param("id_bar", "id_bars must be added to URL").notEmpty().isInt(),
     body("name", "name must be added to body").optional().isString(),
