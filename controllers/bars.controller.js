@@ -299,6 +299,61 @@ const BarsController = {
       return res.json({ averageDegree });
     }
   },
+
+  getListOfBeer: async (req, res) => {
+    const { id_bar } = req.params;
+    const {
+      sort,
+      limit,
+      offset,
+      degree_min,
+      degree_max,
+      price_min,
+      price_max,
+    } = req.query;
+
+    const bar = await Bars.findByPk(id_bar).then((data) => {
+      return data;
+    });
+
+    if (!bar) {
+      return res.status(400).json({
+        message: "Error: bar not found",
+      });
+    }
+
+    const objTri = { where: { id_bar: id_bar } };
+    if (sort) {
+      objTri.order = [["name", sort]];
+    }
+    if (limit) {
+      objTri.limit = limit;
+    }
+    if (offset) {
+      objTri.offset = offset;
+    }
+    if ((degree_min, degree_max)) {
+      objTri.where.degree = {
+        [Op.between]: [degree_min, degree_max],
+      };
+    }
+    if ((price_min, price_max)) {
+      objTri.where.price = {
+        [Op.between]: [price_min, price_max],
+      };
+    }
+
+    //récupère une liste des bieres du bar choisis
+    const beer = await Beer.findAll(objTri);
+
+    if (beer.length == 0) {
+      return res.status(400).json({
+        message: "Error: No beers founded",
+      });
+    }
+    res.status(200).json(beer);
+    //console.log(beer);
+  },
 };
 
 module.exports = BarsController;

@@ -1,5 +1,11 @@
 const { body, param, query } = require("express-validator");
 
+const ValidateCustomTri = (value) => {
+  if (value === "asc" || value === "desc") {
+    return true;
+  }
+  return false;
+};
 const BarsMiddleware = {
   create: [
     body("name", "name must be added to body").notEmpty().isString(),
@@ -34,6 +40,18 @@ const BarsMiddleware = {
       .optional()
       .isFloat()
       .withMessage("Price_max must be a number"),
+  ],
+  beer: [
+    query("sort", "Sort must be added 'asc' or 'desc'")
+      .optional()
+      .custom(ValidateCustomTri)
+      .isString(),
+    query("limit", "Limit must be a number").optional().isNumeric(),
+    query("offset", "Offset must be a number").optional().isNumeric(),
+    query("degree_min", "Degree_min must be a number").optional().isNumeric(),
+    query("degree_max", "Degree_max must be a number").optional().isNumeric(),
+    query("price_min", "Price_min must be a number").optional().isNumeric(),
+    query("price_max", "Price_max must be a number").optional().isNumeric(),
   ],
 };
 
