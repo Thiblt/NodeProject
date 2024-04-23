@@ -1,10 +1,11 @@
 const Order = require("../models/order.model.js");
 const Bars = require("../models/bars.model.js");
+const Beer_order= require("../models/beer_order.model.js");
 const puppeteer = require('puppeteer');
 
 
 const getOrderById = (req, res) => {
-  Order.findByPk(req.params.id).then((order) => res.json(order));
+  Order.findByPk(req.params.id_commande).then((order) => res.json(order));
 };
 
 const getAllOrderByBar = (req, res) => {
@@ -17,7 +18,7 @@ const addOrder = (req, res) => {
   const order = {
     name: req.body.name,
     price: req.body.price,
-    id_bar: req.params.id_bar,
+    id_bar: parseInt(req.params.id_bar),
     status: req.body.status,
     date: req.body.date || new Date().toLocaleString(),
   };
