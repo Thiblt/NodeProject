@@ -19,7 +19,7 @@ router.delete(
   deleteBeerFromOrder
 );
 
-//   POST /beer_order/:id_commande/biere/:id_biere => Ajouter une biere à une commande
+//   GET /beer_order/:id_commande/biere/:id_biere => Ajouter une biere à une commande
 router.post(
   "/:id_commande/biere/:id_biere",
   validateIdParamOrder,

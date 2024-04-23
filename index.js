@@ -36,3 +36,5 @@ app.listen(port, async () => {
     throw error;
   }
 });
+
+module.exports = app;

@@ -1,4 +1,7 @@
 const Order = require("../models/order.model.js");
+const Bars = require("../models/bars.model.js");
+const puppeteer = require('puppeteer');
+
 
 const getOrderById = (req, res) => {
   Order.findByPk(req.params.id).then((order) => res.json(order));
@@ -16,12 +19,8 @@ const addOrder = (req, res) => {
     price: req.body.price,
     id_bar: req.params.id_bar,
     status: req.body.status,
-    date : req.body.date|| new Date().toLocaleString()
+    date: req.body.date || new Date().toLocaleString(),
   };
-
-
-
-  
 
   Order.create(order)
     .then((order) => {
@@ -72,16 +71,69 @@ const putOrder = async (req, res) => {
 
 const deleteOrderById = (req, res) => {
   Order.destroy({ where: { id: req.params.id_commande } })
-    .then(() => Beer_order.destroy({  
-      where: {
-        id_order: req.params.id_commande
-      } 
-    }))
+    .then(() =>
+      Beer_order.destroy({
+        where: {
+          id_order: req.params.id_commande,
+        },
+      })
+    )
     .then(() => res.send("Order deleted"))
-    .catch(err => {
+    .catch((err) => {
       console.error(err);
       res.status(500).send("Error deleting order");
     });
+};
+
+const getPdfById = async (req, res) => {
+  try {
+    const order = await Order.findByPk(req.params.id_commande);
+    const bar = await Bars.findByPk(order.id_bar);
+
+    const htmlContent = `
+      <html>
+        <body>
+          <h1>Commande numéro ${order.id}</h1>
+          <table>
+            <tr>
+              <td>Nom de la commande</td>
+              <td>${order.name}</td>
+            </tr>
+            <tr>
+              <td>Prix</td>
+              <td>${order.price} euros</td>
+            </tr>
+            <tr>
+              <td>Nom du bar</td>
+              <td>${bar.name}</td>
+            </tr>
+            <tr>
+              <td>Date de la commande</td>
+              <td>${order.date}</td>
+            </tr>
+            <tr>
+              <td>Statut de la commande</td>
+              <td>${order.status}</td>
+            </tr>
+          </table>
+        </body>
+      </html>
+    `;
+
+    const browser = await puppeteer.launch();
+    const page = await browser.newPage();
+    await page.setContent(htmlContent);
+    const pdfBuffer = await page.pdf();
+    await browser.close();
+    res.set({
+      'Content-Type': 'application/pdf',
+      'Content-Disposition': `attachment; filename="Order-${order.id}.pdf"`,
+    });
+    res.send(pdfBuffer);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error generating PDF');
+  }
 };
 
 module.exports = {
@@ -90,4 +142,5 @@ module.exports = {
   getAllOrderByBar,
   getOrderById,
   putOrder,
+  getPdfById,
 };
