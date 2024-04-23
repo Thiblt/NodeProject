@@ -2,7 +2,8 @@ const {deleteOrderById,
     addOrder,
     getAllOrderByBar,
     getOrderById,
-    putOrder,} = require("../controllers/order.controller")
+    putOrder, 
+    getPdfById} = require("../controllers/order.controller")
 const { validateIdParamOrder, validateId_barParam, validateBodyOrder, validateBodyPutOrder }  =require ("../middlewares/order.middleware")
 const  validate =require ("../middlewares/validate.middleware")
 const express = require("express")
@@ -22,6 +23,9 @@ router.put("/:id_commande", validateIdParamOrder,validateBodyPutOrder, validate,
 
 // DELETE /orders/:id_commande => Supprimer une commande d'un bars
 router.delete("/:id_commande",validateIdParamOrder, validate, deleteOrderById)
+
+// GET /orders/details/:id_commande => Afficher un pdf de la commande
+router.get("/details/:id_commande",validateIdParamOrder, validate, getPdfById)
 
 
 module.exports = router

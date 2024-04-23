@@ -8,7 +8,7 @@ const router = express.Router()
 // Delete /beer_order/:id_commande/biere/:id_biere => Supprimer une biere à une commande
 router.delete("/:id_commande/biere/:id_biere",validateIdParamOrder,validateId_biereParam,validate,  deleteBeerFromOrder)
 
-//   GET /beer_order/:id_commande/biere/:id_biere => Ajouter une biere à une commande
+//   POST /beer_order/:id_commande/biere/:id_biere => Ajouter une biere à une commande
 router.post("/:id_commande/biere/:id_biere",validateIdParamOrder,validateId_biereParam, validate, addBeerToOrder)
 
 
