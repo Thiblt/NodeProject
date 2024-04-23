@@ -256,7 +256,7 @@ const BarsController = {
               beerList.push(beer);
             }
           }
-          console.log("beerlist", beerList);
+
           let totDegree = 0;
           // boucle et incrémente toutes les bières filtrées
           beerList.forEach((beer) => {
@@ -266,6 +266,7 @@ const BarsController = {
           const averageDegree = Math.round(totDegree / beerList.length);
           return res.json({ averageDegree });
         }
+        console.log("🚀 ~ //ordersBeers.forEach ~ beerlist:", beerlist);
       });
     } else {
       const beer_where = () => {

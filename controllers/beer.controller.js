@@ -45,7 +45,9 @@ const update = async (req, res) => {
   if (req.body.price !== undefined) beer.price = req.body.price;
 
   await Beer.update(beer, { where: { id: req.params.id } })
-    .then((queryResult) => res.send(queryResult))
+    .then(() =>
+      Beer.findByPk(req.params.id).then((queryResult) => res.json(queryResult))
+    )
     .catch((err) => {
       res.send(err);
     });
