@@ -18,7 +18,7 @@ const verifyRefresh = (req, res, next) => {
   if (!token)
     return res.status(401).json({ message: "Error: member is not connected" });
 
-  jwt.verify(token, "masuperclérefresh", (err, decoded) => {
+  jwt.verify(token, process.env.JWT_REFRESH_KEY, (err, decoded) => {
     if (err) {
       return res
         .status(401)
@@ -33,7 +33,7 @@ const verifyAccess = (req, res, next) => {
   if (!token)
     return res.status(401).json({ message: "Error: member is not connected" });
 
-  jwt.verify(token, "masupercléaccess", (err, decoded) => {
+  jwt.verify(token, process.env.JWT_ACCESS_KEY, (err, decoded) => {
     if (err) {
       return res
         .status(401)
@@ -43,5 +43,21 @@ const verifyAccess = (req, res, next) => {
     next();
   });
 };
+const verifyAdmin = (req, res, next) => {
+  const token = req.headers("authorization").split(" ")[1];
+  if (!token)
+    return res.status(401).json({ message: "Error: member is not connected" });
 
-module.exports = { MemberMiddleware, verifyRefresh, verifyAccess };
+  jwt.verify(token, process.env.JWT_ACCESS_KEY, (err, decoded) => {
+    if (err || decoded.role !== "admin") {
+      return res
+        .status(401)
+        .json({ message: "Error: member is not connected" });
+    }
+
+    req.member = decoded;
+    next();
+  });
+};
+
+module.exports = { MemberMiddleware, verifyRefresh, verifyAccess, verifyAdmin };
