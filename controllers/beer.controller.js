@@ -1,4 +1,6 @@
 const Beer = require("../models/beer.model");
+const ordersBeers = require("../models/beer_order.model");
+const Orders = require("../models/order.model");
 const bars = [
   {
     id: 1,
@@ -53,11 +55,25 @@ const update = async (req, res) => {
     });
 };
 
-// Delete a beer
-const destroy = (req, res) => {
-  Beer.destroy({ where: { id: req.params.id } }).then(() =>
-    res.send("Beer deleted")
-  );
+// Delete a beer and order if exist
+const destroy = async (req, res) => {
+  const { id: idBeer } = req.params;
+
+  const orderBeers = await ordersBeers.findAll({ where: { id_beer: idBeer } });
+
+  if (!orderBeers.length) {
+    return res.status(400).json({
+      message: "Error: Beers order not found",
+    });
+  }
+
+  for (let checkOrder of orderBeers) {
+    await Orders.destroy({ where: { id: checkOrder.id_order } }).catch(() => {
+      console.log("Il y a une erreur");
+    });
+  }
+
+  Beer.destroy({ where: { id: idBeer } }).then(() => res.send("Beer deleted"));
 };
 
 // Watch beer info
