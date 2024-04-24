@@ -25,4 +25,17 @@ router.get(
   BarsController.orders_by_date
 );
 
+router.get(
+  "/:id_bar/degree",
+  BarsMiddleware.degree,
+  validate,
+  BarsController.getDegree
+);
+router.get(
+  "/:id_bar/beer",
+  BarsMiddleware.beer,
+  validate,
+  BarsController.getListOfBeer
+);
+
 module.exports = router;

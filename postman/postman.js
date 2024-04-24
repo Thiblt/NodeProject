@@ -4,6 +4,10 @@ const routes = {
      * Lister les bars (GET) : http://localhost:3001/bars
      */
     all: {},
+
+    //bonus : filtrer les bieres d'un bar
+    //localhost:3001/bars/1/beer?sort=asc&limit=2&offset=10&degree_min=4&degree_max=20&price_min=0&price_max=9
+    getAllBeerOfBar: {},
     /**
      * Lire un bar (GET) : http://localhost:3001/bars/:id
      */
