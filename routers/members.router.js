@@ -1,6 +1,9 @@
 const { Router } = require("express");
 const MembersController = require("../controllers/members.controller");
-const MemberMiddleware = require("../middlewares/members.middleware");
+const {
+  MemberMiddleware,
+  verifyRefresh,
+} = require("../middlewares/members.middleware");
 const validate = require("../middlewares/validate.middleware");
 
 const router = Router();
@@ -14,11 +17,7 @@ router.get(
 );
 
 // Auth Routes
-router.get(
-  "/access",
-  MemberMiddleware.verifyRefresh,
-  MembersController.get_token
-);
-router.delete("/", MemberMiddleware.verifyRefresh, MembersController.delete);
+router.get("/access", verifyRefresh, MembersController.get_token);
+router.delete("/", verifyRefresh, MembersController.delete);
 
 module.exports = router;

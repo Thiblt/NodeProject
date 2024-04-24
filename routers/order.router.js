@@ -15,7 +15,7 @@ router.post("/bars/:id_bar",validateId_barParam, validateBodyOrder,validate,  ad
 //   GET /orders/bars/:id_bar => Liste des commandes d'un bars
 router.get("/bars/:id_bar",validateId_barParam, validate, getAllOrderByBar)
 
-//   GET //orders/:id_commande => Détail d'une commande d'un bars
+//   GET /orders/:id_commande => Détail d'une commande d'un bars
 router.get("/:id_commande",validateIdParamOrder, validate, getOrderById)
 
 //   PUT //orders/:id_commande => Modifier une commande d'un bars

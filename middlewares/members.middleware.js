@@ -13,7 +13,7 @@ const MemberMiddleware = {
   ],
 };
 
-export const verifyRefresh = (req, res, next) => {
+const verifyRefresh = (req, res, next) => {
   const token = req.headers("authorization").split(" ")[1];
   if (!token)
     return res.status(401).json({ message: "Error: member is not connected" });
@@ -28,7 +28,7 @@ export const verifyRefresh = (req, res, next) => {
     next();
   });
 };
-export const verifyAccess = (req, res, next) => {
+const verifyAccess = (req, res, next) => {
   const token = req.headers("authorization").split(" ")[1];
   if (!token)
     return res.status(401).json({ message: "Error: member is not connected" });
@@ -44,4 +44,4 @@ export const verifyAccess = (req, res, next) => {
   });
 };
 
-module.exports = MemberMiddleware;
+module.exports = { MemberMiddleware, verifyRefresh, verifyAccess };
