@@ -15,8 +15,8 @@ const addBeerToOrder = async (req, res) => {
 
 
     const beer_order = {
-        id_beer: req.params.id_biere,
-        id_order: req.params.id_commande,
+        id_beer: parseInt(req.params.id_biere),
+        id_order: parseInt(req.params.id_commande),
       };
     
     
