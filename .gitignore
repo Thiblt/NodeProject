@@ -1,4 +1,5 @@
-node_modules/
-yarn.lock
-data/
-package-lock.json
+*node_modules/
+*yarn.lock
+server/data/
+*package-lock.json
+*.env*

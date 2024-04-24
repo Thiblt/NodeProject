@@ -6,12 +6,10 @@ const orderRouter = require("./routers/order.router.js");
 const BarsRouter = require("./routers/bars.router");
 const beerRouter = require("./routers/beer.router");
 const beer_orderRouter = require("./routers/beer_order.router");
-
+const MembersRouter = require("./routers/members.router");
 
 const app = express();
-const port = 3001;
-
-
+const port = process.env.PORT || 3001;
 
 // ------ Middlewares ------
 
@@ -24,6 +22,7 @@ app.use("/bars", BarsRouter);
 app.use("/orders", orderRouter);
 app.use("/beers", beerRouter);
 app.use("/beer_order", beer_orderRouter);
+app.use("/members", MembersRouter);
 
 // ------ Listen ------
 
