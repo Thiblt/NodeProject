@@ -7,19 +7,19 @@ import { FC } from "react";
 
 interface IlinkButtonProps {
   text: string;
-  btnAction: string;
+  onClick?: () => any;
   colorBg: string;
 }
 
-const LinkButton: FC<IlinkButtonProps> = ({ text, btnAction, colorBg }) => {
+const LinkButton: FC<IlinkButtonProps> = ({ text, onClick, colorBg }) => {
   // Return
   return (
-    <Link
+    <button
       className={`ring-2 ring-offset-2 text-neutral-200 p-2 mx-2 rounded ${colorBg} `}
-      href={btnAction}
+      onClick={onClick}
     >
       {text}
-    </Link>
+    </button>
   );
 };
 export default LinkButton;

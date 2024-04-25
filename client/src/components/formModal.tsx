@@ -1,10 +1,25 @@
 // ||||||||||||||||||||||||||||| Dependances ||||||||||||||||||||||||||||||||||||
 
 import Link from "next/link";
-import { FC, useState } from "react";
+import { Dispatch, FC, SetStateAction, useState } from "react";
 
 // ||||||||||||||||||||||||||||| linkButton Component ||||||||||||||||||||||||||||||||||||
-interface IpageProps {}
+interface IpageProps {
+  data: {
+    nom: { value: string; setNom: Dispatch<SetStateAction<string>> };
+    description: {
+      value: string;
+      setDescription: Dispatch<SetStateAction<string>>;
+    };
+    adress: { value: string; setAdress: Dispatch<SetStateAction<string>> };
+    telephone: {
+      value: string;
+      setTelephone: Dispatch<SetStateAction<string>>;
+    };
+    mail: { value: string; setMail: Dispatch<SetStateAction<string>> };
+  };
+  onClick: () => any;
+}
 interface IBeers {
   name?: string;
   description?: string;
@@ -13,7 +28,7 @@ interface IBeers {
   email?: string;
 }
 
-const FormBar: FC<IpageProps> = ({}) => {
+const FormBar: FC<IpageProps> = ({ data, onClick }) => {
   const [beer] = useState<IBeers | null>(null);
   // Return
   return (
@@ -95,6 +110,7 @@ const FormBar: FC<IpageProps> = ({}) => {
           />
         </div>
       </div>
+      <button onClick={onClick} type="submit">Ajouter</button>
     </form>
   );
 };

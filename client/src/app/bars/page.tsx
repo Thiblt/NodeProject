@@ -4,6 +4,8 @@ import Layout from "@/layouts/layout";
 import { FC, useEffect, useState } from "react";
 import axios from "axios";
 import LinkButton from "@/components/linkButton";
+import { useAxios } from "@/hooks/axios.hook";
+import FormBar from "@/components/formModal";
 
 // ||||||||||||||||||||||||||||| page Component ||||||||||||||||||||||||||||||||||||
 
@@ -14,7 +16,28 @@ interface IBars {
 }
 
 const HomeBar: FC<IpageProps> = ({}) => {
+  const handleAdd = async () => {
+    await useAxios
+      .post("/bars/add", {
+        nom,
+        adress,
+        telephone,
+        description,
+        mail,
+      })
+      .then((res) => {
+        setShowModal(false);
+      });
+  };
   const [bars, setBars] = useState<IBars | null>(null);
+
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [nom, setNom] = useState<string>("");
+  const [adress, setAdress] = useState<string>("");
+  const [description, setDescription] = useState<string>("");
+  const [telephone, setTelephone] = useState<string>("");
+  const [mail, setMail] = useState<string>("");
+
   const data = async () => {
     await axios
       .get("http://localhost:3000/api/bars")
@@ -34,16 +57,33 @@ const HomeBar: FC<IpageProps> = ({}) => {
   // Return
   return (
     <Layout>
+      {showModal && (
+        <FormBar
+          data={{
+            nom: { value: nom, setNom },
+            adress: { value: adress, setAdress },
+            description: { value: description, setDescription },
+            mail: { value: mail, setMail },
+            telephone: { value: telephone, setTelephone },
+          }}
+          onClick={() => {
+            handleAdd();
+          }}
+        ></FormBar>
+      )}
       <div className="mt-8 container mx-auto px-8">
         <div className="flex justify-center">
           <LinkButton
             text={"Ajouter un bar"}
-            btnAction={`http://localhost:3000/bars/add`}
             colorBg={
               "bg-slate-400 px-6 ring-cyan-900 border-cyan-900 hover:bg-slate-800/80"
             }
+            onClick={() => {
+              setShowModal(!showModal);
+            }}
           ></LinkButton>
         </div>
+
         {bars?.data?.map((bar) => {
           return (
             <div
@@ -62,14 +102,12 @@ const HomeBar: FC<IpageProps> = ({}) => {
                   <li>
                     <LinkButton
                       text={"Modifier"}
-                      btnAction={`http://localhost:3000/bars/modify/${bar.id}`}
                       colorBg={
                         "bg-emerald-800 ring-emerald-900 hover:bg-emerald-800/50"
                       }
                     ></LinkButton>
                     <LinkButton
                       text={"Supprimer"}
-                      btnAction={`http://localhost:3000/bars/delete/${bar.id}`}
                       colorBg={"bg-red-800 ring-red-900 hover:bg-red-800/50"}
                     ></LinkButton>
                   </li>
