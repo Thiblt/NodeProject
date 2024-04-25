@@ -4,7 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "nodemon index2.js",
-    "test": "jest"
+    "test": "jest --watch"
   },
   "repository": "https://github.com/Thiblt/NodeProject",
   "author": "Iam4ealDamba <prayforsouls720@gmail.com>",

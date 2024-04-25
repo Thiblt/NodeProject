@@ -1,33 +1,41 @@
+"use client";
+
 // ||||||||||||||||||||||||||||| Dependances ||||||||||||||||||||||||||||||||||||
 
-import axios from "axios";
+import { useAxios } from "@/hooks/axios.hook";
 import { FC } from "react";
 
 // ||||||||||||||||||||||||||||| page Component ||||||||||||||||||||||||||||||||||||
 
 interface IpageProps {}
 
-const page: FC<IpageProps> = ({}) => {
-
-  const data = {
-    // Your request parameters here
+const HomePage: FC<IpageProps> = ({}) => {
+  // Functions
+  const handleLogout = async () => {
+    try {
+      await useAxios
+        .get("/members/logout", {
+          withCredentials: true,
+        })
+        .then((res) => {
+          if (res.data.status === 200) {
+            window.location.reload();
+          } else {
+            console.log(res.data.message);
+          }
+        })
+        .catch((err) => console.error(err));
+    } catch (error) {
+      console.error(error);
+    }
   };
-  
-  // Make the PUT request using Axios
-  axios.put("http://localhost/3000/api", data)
-    .then(response => {
-      // Handle the response data
-      console.log('PUT request successful', response.data);
-    })
-    .catch(error => {
-      // Handle any errors
-      console.error('Error making PUT request', error);
-    })
+
   // Return
   return (
     <div>
       <p>page Component</p>
+      <button onClick={handleLogout}>Deconnection</button>
     </div>
   );
 };
-export default page;
+export default HomePage;
