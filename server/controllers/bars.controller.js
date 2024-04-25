@@ -3,7 +3,7 @@ const { Op } = require("sequelize");
 const Bars = require("../models/bars.model");
 const Beer = require("../models/beer.model");
 const OrderBeer = require("../models/beer_order.model");
-const Order = require("../models/order.model");
+const Orders = require("../models/order.model");
 
 const BarsController = {
   /**
@@ -181,7 +181,7 @@ const BarsController = {
         description: description,
       })
         .then(async (bar) => {
-          return res.status(201).json({
+          return res.status(200).json({
             message: "Success: Request successfully completed",
             data: bar,
           });
@@ -293,7 +293,7 @@ const BarsController = {
       });
     }
     //récupère une liste des commandes
-    const orders = await Order.findAll({
+    const orders = await Orders.findAll({
       where: {
         id_bar: id_bar,
         date: {
