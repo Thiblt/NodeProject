@@ -1,9 +1,12 @@
 // ||||||||||||||||||||||||||||| Dependances ||||||||||||||||||||||||||||||||||||
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import axios from "axios";
+import { NextApiRequest } from "next";
 
 // ||||||||||||||||||||||||||||| Route ||||||||||||||||||||||||||||||||||||
-export const GET = async (req: NextRequest) => {
+export const GET = async (req: NextApiRequest) => {
+    const { idBar } = req.query
+    console.log(idBar)
   try {
     const data = await axios
       /* 
@@ -14,7 +17,7 @@ export const GET = async (req: NextRequest) => {
       ) 
       */
 
-      .get("http://localhost:3001/order")
+      .get("http://localhost:3001/orders/bars/" +idBar, )
       .then((response) => {
         console.log(response.data);
         return response.data;
