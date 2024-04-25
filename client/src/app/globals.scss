@@ -8,6 +8,10 @@
   box-sizing: border-box;
 }
 
+header ul li {
+  @apply bg-slate-400 hover:bg-slate-400/60 px-4 rounded text-teal-950;
+}
+
 .signup-page,
 .signin-page {
   position: relative;
