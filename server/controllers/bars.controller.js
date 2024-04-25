@@ -261,6 +261,32 @@ const BarsController = {
           message: "Error: Bar not found",
         });
       }
+
+      // Delete order_beer of the bar
+      await OrderBeer.destroy({ where: { id_bar: id_bar } })
+        .then(() => {
+          console.log("Order_beer deleted");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      // Delete all the orders of the bar
+      await Orders.destroy({ where: { id_bar: id_bar } })
+        .then(() => {
+          console.log("Orders deleted");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+
+      // Delete All Beers of the bar
+      await Beer.destroy({ where: { id_bar: id_bar } })
+        .then(() => {
+          console.log("Beers deleted");
+        })
+        .catch((error) => {});
+
       await Bars.destroy({ where: { id: id_bar } })
         .then(() => {
           return res.status(200).json({

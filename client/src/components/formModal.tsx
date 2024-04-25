@@ -1,7 +1,7 @@
 // ||||||||||||||||||||||||||||| Dependances ||||||||||||||||||||||||||||||||||||
 
 import Link from "next/link";
-import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Dispatch, FC, FormEvent, SetStateAction, useState } from "react";
 
 // ||||||||||||||||||||||||||||| linkButton Component ||||||||||||||||||||||||||||||||||||
 interface IpageProps {
@@ -18,7 +18,7 @@ interface IpageProps {
     };
     mail: { value: string; setMail: Dispatch<SetStateAction<string>> };
   };
-  onClick: () => any;
+  onClick: (e: FormEvent) => Promise<void>;
 }
 interface IBeers {
   name?: string;
@@ -32,7 +32,7 @@ const FormBar: FC<IpageProps> = ({ data, onClick }) => {
   const [beer] = useState<IBeers | null>(null);
   // Return
   return (
-    <form className="w-full max-w-lg">
+    <form className="w-full max-w-lg" onSubmit={onClick}>
       <div className="flex flex-wrap -mx-3 mb-6">
         <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
           <label
@@ -110,7 +110,7 @@ const FormBar: FC<IpageProps> = ({ data, onClick }) => {
           />
         </div>
       </div>
-      <button onClick={onClick} type="submit">Ajouter</button>
+      <button type="submit">Ajouter</button>
     </form>
   );
 };

@@ -3,13 +3,17 @@
 // ||||||||||||||||||||||||||||| Dependances ||||||||||||||||||||||||||||||||||||
 
 import { useAxios } from "@/hooks/axios.hook";
-import { FC } from "react";
+import { useRouter } from "next/navigation";
+import { FC, useEffect } from "react";
+import Loading from "./loading";
 
 // ||||||||||||||||||||||||||||| page Component ||||||||||||||||||||||||||||||||||||
 
 interface IpageProps {}
 
 const HomePage: FC<IpageProps> = ({}) => {
+  const router = useRouter();
+
   // Functions
   const handleLogout = async () => {
     try {
@@ -30,12 +34,11 @@ const HomePage: FC<IpageProps> = ({}) => {
     }
   };
 
+  useEffect(() => {
+    router.replace("/bars");
+  }, []);
+
   // Return
-  return (
-    <div>
-      <p>page Component</p>
-      <button onClick={handleLogout}>Deconnection</button>
-    </div>
-  );
+  return <Loading />;
 };
 export default HomePage;

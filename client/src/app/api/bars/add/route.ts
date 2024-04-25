@@ -5,9 +5,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 // ||||||||||||||||||||||||||||| Route ||||||||||||||||||||||||||||||||||||
 export const GET = async (req: NextRequest) => {
+  const { nom, adress, telephone, description, mail } = await req.json();
+  console.log(nom, adress, telephone, description, mail);
+
   try {
     const refreshToken = cookies().get("refresh_token")?.value;
-    const { nom, adress, telephone, description, mail } = await req.json();
     if (!refreshToken) {
       return NextResponse.json({ status: 400 });
     }
@@ -22,13 +24,21 @@ export const GET = async (req: NextRequest) => {
       return NextResponse.json({ status: 400 });
     }
     await useAxiosPrivate
-      .post("/bars", {
-        name: nom,
-        adresse: adress,
-        tel: telephone,
-        email: mail,
-        description: description,
-      })
+      .post(
+        "/bars",
+        {
+          name: nom,
+          adresse: adress,
+          tel: telephone,
+          email: mail,
+          description: description,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${accesToken}`,
+          },
+        }
+      )
       .then(() => {
         return NextResponse.json({ message: "ok" });
       });

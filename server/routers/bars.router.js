@@ -2,7 +2,7 @@ const { Router } = require("express");
 const BarsController = require("../controllers/bars.controller");
 const BarsMiddleware = require("../middlewares/bars.middleware");
 const validate = require("../middlewares/validate.middleware");
-const { verifyAccess } = require("../middlewares/members.middleware");
+const { verifyAdmin } = require("../middlewares/members.middleware");
 
 // Variables
 const router = Router();
@@ -11,12 +11,12 @@ const router = Router();
 router
   .route("/")
   .get(BarsController.all)
-  .post(verifyAccess, BarsMiddleware.create, validate, BarsController.create);
+  .post(verifyAdmin, BarsMiddleware.create, validate, BarsController.create);
 router
   .route("/:id_bar")
   .get(BarsMiddleware.one, validate, BarsController.one)
-  .put(verifyAccess, BarsMiddleware.update, validate, BarsController.update)
-  .delete(verifyAccess, BarsMiddleware.delete, validate, BarsController.delete);
+  .put(verifyAdmin, BarsMiddleware.update, validate, BarsController.update)
+  .delete(verifyAdmin, BarsMiddleware.delete, validate, BarsController.delete);
 
 // Specific Routes
 router.get(

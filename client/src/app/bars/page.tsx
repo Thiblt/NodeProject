@@ -1,7 +1,7 @@
 "use client";
 // ||||||||||||||||||||||||||||| Dependances ||||||||||||||||||||||||||||||||||||
 import Layout from "@/layouts/layout";
-import { FC, useEffect, useState } from "react";
+import { FC, FormEvent, useEffect, useState } from "react";
 import axios from "axios";
 import LinkButton from "@/components/linkButton";
 import { useAxios } from "@/hooks/axios.hook";
@@ -16,7 +16,8 @@ interface IBars {
 }
 
 const HomeBar: FC<IpageProps> = ({}) => {
-  const handleAdd = async () => {
+  const handleAdd = async (e: FormEvent) => {
+    e.preventDefault();
     await useAxios
       .post("/bars/add", {
         nom,
@@ -26,7 +27,7 @@ const HomeBar: FC<IpageProps> = ({}) => {
         mail,
       })
       .then((res) => {
-        setShowModal(false);
+        if (res.data.status === 200) setShowModal(false);
       });
   };
   const [bars, setBars] = useState<IBars | null>(null);
@@ -66,9 +67,7 @@ const HomeBar: FC<IpageProps> = ({}) => {
             mail: { value: mail, setMail },
             telephone: { value: telephone, setTelephone },
           }}
-          onClick={() => {
-            handleAdd();
-          }}
+          onClick={handleAdd}
         ></FormBar>
       )}
       <div className="mt-8 container mx-auto px-8">
