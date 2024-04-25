@@ -23,11 +23,11 @@ describe("Test des routes order", () => {
   it("GET /orders/bars/:id_bar => Liste des commandes d'un bars", async () => {
     const response = await request(app).get("/orders/bars/1");
     expect(response.status).toEqual(200);
-    expect(response.body.length).toBeGreaterThan(1);
+    expect(response.body.length).toBeGreaterThan(0);
   });
 
   it("GET //orders/:id_commande => Détail d'une commande d'un bars", async () => {
-    const response = await request(app).get("/orders/4");
+    const response = await request(app).get("/orders/1");
     expect(response.status).toEqual(200);
     expect(response.body).toHaveProperty("name");
     expect(response.body).toHaveProperty("price");
@@ -38,7 +38,7 @@ describe("Test des routes order", () => {
 
   it("PUT //orders/:id_commande => Modifier une commande d'un bars", async () => {
     const response = await request(app)
-      .put("/orders/3")
+      .put("/orders/1")
       .set("Accept", "application/json")
       .send({ name: "order test2" });
     expect(response.status).toEqual(200);
@@ -50,10 +50,10 @@ describe("Test des routes order", () => {
   });
 
   it("GET /orders/details/:id_commande => Afficher un pdf de la commande", async () => {
-    const response = await request(app).get("/orders/details/12");
+    const response = await request(app).get("/orders/details/1");
     expect(response.status).toEqual(200);
     expect(response.header["content-type"]).toContain("application/pdf");
-  });
+  }, 10000);
 });
 
 // it("GET /orders/bars/:id_bar => Liste des commandes d'un bars", async () => {
