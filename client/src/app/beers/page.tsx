@@ -43,7 +43,11 @@ const HomeBeer: FC<IpageProps> = ({}) => {
     <Layout>
       <div className="mt-8 container mx-auto px-8">
         <label htmlFor="foundBar">Cherchez le bar : </label>
-        <select name="foundBar" id="foundBar">
+        <select
+          className="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+          name="foundBar"
+          id="foundBar"
+        >
           {bars?.data?.map((bar) => {
             return (
               <option key={bar.id} value={bar.id}>
