@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+.signup-page,
+.signin-page {
+  position: relative;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.page-container {
+  position: relative;
+  border: 2px solid black;
+  border-radius: 12px;
+  backdrop-filter: brightness(75%) blur(10px);
+  @apply px-4 py-6;
+
+  & > section {
+    margin-bottom: 30px;
+    h1 {
+      font-size: 1.5rem;
+      text-align: center;
+      font-weight: bold;
+      @apply text-gray-100;
+    }
+    h3 {
+      font-size: 0.9rem;
+      text-align: center;
+      font-weight: bold;
+      @apply text-gray-100;
+    }
+  }
+
+  .input-content {
+    @apply flex flex-col gap-y-2 mb-2;
+  }
+
+  input {
+    @apply w-full py-1 px-4 rounded-md;
+  }
+  label {
+    @apply font-bold text-gray-100;
+  }
+  .error {
+    @apply mt-2 text-xs font-bold text-red-500;
+  }
+  .show_pwd {
+    @apply w-6 h-6 absolute top-1/2 -translate-y-1/2 right-3;
+  }
+  .form_button {
+    @apply w-full mt-6 rounded-md;
+
+    button {
+      @apply w-full py-1 px-4 rounded-md bg-gray-100;
+    }
+  }
+}

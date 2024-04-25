@@ -14,7 +14,9 @@ const MemberMiddleware = {
 };
 
 const verifyRefresh = (req, res, next) => {
-  const token = req.headers("authorization").split(" ")[1];
+  const token =
+    (req.headers.authorization && req.headers.authorization.split(" ")[1]) ||
+    null;
   if (!token)
     return res.status(401).json({ message: "Error: member is not connected" });
 
@@ -29,7 +31,9 @@ const verifyRefresh = (req, res, next) => {
   });
 };
 const verifyAccess = (req, res, next) => {
-  const token = req.headers("authorization").split(" ")[1];
+  const token =
+    (req.headers.authorization && req.headers.authorization.split(" ")[1]) ||
+    null;
   if (!token)
     return res.status(401).json({ message: "Error: member is not connected" });
 
@@ -44,7 +48,9 @@ const verifyAccess = (req, res, next) => {
   });
 };
 const verifyAdmin = (req, res, next) => {
-  const token = req.headers("authorization").split(" ")[1];
+  const token =
+    (req.headers.authorization && req.headers.authorization.split(" ")[1]) ||
+    null;
   if (!token)
     return res.status(401).json({ message: "Error: member is not connected" });
 

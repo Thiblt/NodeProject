@@ -8,8 +8,8 @@ const validate = require("../middlewares/validate.middleware");
 
 const router = Router();
 
-router.get("/signin", MembersController.signin);
-router.get(
+router.post("/signin", MembersController.signin);
+router.post(
   "/signup",
   MemberMiddleware.signup,
   validate,
@@ -17,7 +17,7 @@ router.get(
 );
 
 // Auth Routes
-router.get("/access", verifyRefresh, MembersController.get_token);
+router.get("/access", verifyRefresh, MembersController.access);
 router.delete("/", verifyRefresh, MembersController.delete);
 
 module.exports = router;
